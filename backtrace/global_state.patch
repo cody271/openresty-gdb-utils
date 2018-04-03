@@ -1,0 +1,21 @@
+diff --git a/src/modules/lua_general.c b/src/modules/lua_general.c
+index 51ca6d50..072ae7ef 100644
+--- a/src/modules/lua_general.c
++++ b/src/modules/lua_general.c
+@@ -638,6 +638,8 @@ lua_general_hook(lua_State *L) {
+   return 1;
+ }
+ 
++static lua_State *globalL = NULL;
++
+ static const luaL_Reg general_lua_funcs[] =
+ {
+   {"coroutine_spawn", lua_general_coroutine_spawn },
+@@ -683,6 +685,7 @@ mtev_lua_general_init(mtev_dso_generic_t *self) {
+   luaL_openlib(lmc->lua_state, "mtev", general_lua_funcs, 0);
+   /* Load some preloads */
+ 
++  globalL = lmc->lua_state;
+   for(module = conf->Cpreloads; module && *module; module++) {
+     int len;
+     char *symbol = NULL;
